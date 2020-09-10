@@ -3,14 +3,25 @@
 
     <item android:id="@+id/nav_home"
         android:title="Home"
-        android:icon="@drawable/ic_default_home_black"/>
+        android:icon="@drawable/ic_home_black"/>
+
+
     <item android:id="@+id/nav_profile"
         android:title="Profile"
         android:icon="@drawable/ic_profile_black"/>
+
+
     <item android:id="@+id/nav_users"
-        android:title="Alumnis"
+        android:title="Alumni"
         android:icon="@drawable/ic_users_black"/>
-    <item android:id="@+id/nav_chat"
+
+    <item android:id="@+id/nav_chats"
         android:title="Chats"
         android:icon="@drawable/ic_chat_black"/>
+    <item android:id="@+id/nav_more"
+        android:title="More"
+        android:icon="@drawable/ic_more_blackkk"/>
+
+
+
 </menu>

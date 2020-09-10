@@ -6,38 +6,54 @@
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="2dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="#ffffff"
+    app:cardBackgroundColor="@color/colorWhite"
     app:contentPadding="3dp">
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/avartarIv"
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/avatarIv"
+            android:src="@drawable/ic_default_img"
             android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/ic_deafault_face" />
+            android:layout_height="70dp"/>
+
         <LinearLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/nameTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Person Name"
-            android:textSize="18sp"
-            android:textColor="#000000"
-            />
-        <TextView
-            android:id="@+id/emailTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Person Email"
-            android:textColor="#000000"/>
+
+
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Person Name"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/emailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Person Email"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorBlack"/>
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/blockIv"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_unblock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

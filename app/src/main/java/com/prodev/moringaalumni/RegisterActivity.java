@@ -27,68 +27,61 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    //views
-    EditText mEmailEt, mPasswordEt;
+    EditText mEmailEt,mPasswordEt;
     Button mRegisterBtn;
-    TextView mHaveAccountTv;
+    TextView haveAccount;
 
-
-    //progressbar to display while registering user
     ProgressDialog progressDialog;
-    // Declare instance of firebase Auth
-    private FirebaseAuth mAuth;
+
+    private FirebaseAuth mauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //Actionbar and its title
-        ActionBar actionBar= getSupportActionBar();
+        ActionBar actionBar=getSupportActionBar();
         actionBar.setTitle("Create Account");
-        //enable back button
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        //init
-        mEmailEt = findViewById(R.id.emailEt);
-        mPasswordEt = findViewById(R.id.passwordEt);
-        mRegisterBtn = findViewById(R.id.registerBtn);
-        mHaveAccountTv= findViewById(R.id.have_accountTv);
 
-        //In the onCreate() method, initialize the FirebaseAuth instance
-        mAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Registering User...");
+        mEmailEt=findViewById(R.id.emailEt);
+        mPasswordEt=findViewById(R.id.passwordEt);
+        mRegisterBtn=findViewById(R.id.registerBtn);
+        haveAccount=findViewById(R.id.have_account);
 
-        //handle register btn click
+        mauth=FirebaseAuth.getInstance();
+
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("Registring User.......");
+
+
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //input email,password
-                String email = mEmailEt.getText().toString().trim();
-                String password = mPasswordEt.getText().toString().trim();
+            public void onClick(View view) {
+                String email=mEmailEt.getText().toString().trim();
+                String password=mPasswordEt.getText().toString().trim();
 
-                //validate
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                {
                     mEmailEt.setError("Invalid Email");
                     mEmailEt.setFocusable(true);
-                }
-                else if (password.length()<6){
-                    mPasswordEt.setError("Password length at least 6 characters");
+                }else if (password.length()<6)
+                {
+                    mPasswordEt.setError("Password length at least 6 character");
                     mPasswordEt.setFocusable(true);
                 }
                 else {
-
-                    registerUser(email, password); //register the user
+                    registerUser(email,password);
                 }
-
             }
         });
-        //handle login textview click listener
-        mHaveAccountTv.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+
+        haveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                 finish();
 
             }
@@ -96,67 +89,60 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser(String email, String password) {
-        //when email and password are valid progress dialog should be showing
+
         progressDialog.show();
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mauth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            progressDialog.dismiss();
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //get user email and uid from auth
-                            String email = user.getEmail();
-                            String uid = user.getUid();
-                            //when a user is registred store user info in FB realtime database
-                            //using hashmap
-                            HashMap<Object, String> hashMap = new HashMap<>();
-                            //put info in hashmap
-                            hashMap.put("email", email);
-                            hashMap.put("uid", uid);
-                            hashMap.put("name", "");// baadae
-                            hashMap.put("onlineStatus", "online");
-                            hashMap.put("typingTo", "noOne"); //will add later e.g edit profile
-                            hashMap.put("phone", "");
-                            hashMap.put("image", "");
-                            hashMap.put("cover", "");
 
-                            // firebase instance
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            // path to store user data named "Users"
-                            DatabaseReference reference = database.getReference("Users");
-                            //put data within hashmaps in database
+                        if (task.isSuccessful()) {
+
+                            progressDialog.dismiss();
+                            FirebaseUser user = mauth.getCurrentUser();
+
+                            String email=user.getEmail();
+                            String uid=user.getUid();
+                            HashMap<Object,String> hashMap=new HashMap<>();
+                            hashMap.put("email",email);
+                            hashMap.put("uid",uid);
+                            hashMap.put("name","");
+                            hashMap.put("onlineStatus","online");
+                            hashMap.put("typingTo","noOne");
+                            hashMap.put("phone","");
+                            hashMap.put("image","");
+                            hashMap.put("cover","");
+
+                            FirebaseDatabase database=FirebaseDatabase.getInstance();
+
+                            DatabaseReference reference=database.getReference("Users");
                             reference.child(uid).setValue(hashMap);
 
-
-                            Toast.makeText(RegisterActivity.this, "REgistered...\n"+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(RegisterActivity.this, DashboardActivity.class));
+                            Toast.makeText(RegisterActivity.this, "Registered..../n"+user.getEmail(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             finish();
+
                         } else {
-                            // If sign in fails, display a message to the user.
                             progressDialog.dismiss();
                             Toast.makeText(RegisterActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+
                         }
-
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                //error, dismiss progress dialog and get and show error message
                 progressDialog.dismiss();
-                Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
-
         });
+
+
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
-        onBackPressed(); //go to previous activity
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
         return super.onSupportNavigateUp();
     }
 }
