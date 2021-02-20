@@ -14,13 +14,13 @@
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/proifleIv"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_face"
-            app:civ_shadow_color="@color/colorPrimary" />
+            app:civ_border_color="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
